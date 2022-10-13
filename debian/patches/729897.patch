@@ -1,0 +1,20 @@
+Description: Fix utilization calculation by using correct constant for full duplex on Linux
+ The code that calculates utilization checks the duplex mode against a numeric
+ value (`2') that (apparently) is the value of DUPLEX_FULL on Solaris.
+ .
+ On Linux, DUPLEX_FULL has a different value and so nicstat will always
+ treat full duplex cards as half duplex and get the utilisation wrong;
+ hence the increased severity.
+Author: Stelios Bounanos <dbts@enotty.net>
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=729897
+--- a/nicstat.c
++++ b/nicstat.c
+@@ -2121,7 +2121,7 @@ print_stats()
+ 			 */
+ 			rutil = min(rbps * 800 / nicp->speed, 100);
+ 			wutil = min(wbps * 800 / nicp->speed, 100);
+-			if (nicp->duplex == 2) {
++			if (nicp->duplex == DUPLEX_FULL) {
+ 				/* Full duplex */
+ 				util = max(rutil, wutil);
+ 			} else {

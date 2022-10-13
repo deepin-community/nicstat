@@ -1,0 +1,23 @@
+nicstat (1.95-1) unstable; urgency=low
+
+  * New upstream release.  (Closes: #754590)
+   * 05-DUPLEX_UNKNOWN_redefinition.patch: no longer needed
+   * 10-assignment_suppression_and_length_modifier.patch: likewise.
+
+  * debian/patches/729895.patch: new patch from Stelios Bounanos to fix
+    NIC speed calculation for 10GB NICs.  (Closes: #729895)
+
+  * debian/patches/729897.patch: new patch from Stelios Bounanos to fix
+    utilization calculation.  (Closes: #729897)
+
+  * debian/control (Homepage): update to SourceForge project page.
+
+  * debian/control (Standards-Version): bump to 3.9.5.0.
+
+ -- James Troup <james.troup@canonical.com>  Thu, 24 Jul 2014 00:59:59 +0100
+
+nicstat (1.92-1) unstable; urgency=low
+
+  * Initial package. (Closes: #702541)
+
+ -- James Troup <james.troup@canonical.com>  Fri, 08 Mar 2013 01:09:44 +0000

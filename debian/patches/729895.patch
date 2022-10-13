@@ -1,0 +1,21 @@
+Description: fix miscalculation of NIC speed
+ On Linux, when nicstat obtains nic info via ioctl SIOCETHTOOL, it picks
+ up the speed from a struct ethtool_cmd, where it's stored as a u16 in
+ Mbps, and multiplies it by the integer literal 1000000 to get bps.
+ .
+ On 10GbE ethernet this causes a signed integer overflow, which is
+ undefined behaviour and the result sadly never seems to work out to
+ the correct 10,000,000,000 bps :-)
+Author: Stelios Bounanos <dbts@enotty.net>
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=729895
+--- a/nicstat.c
++++ b/nicstat.c
+@@ -1609,7 +1609,7 @@ get_speed_duplex(nicdata_t *nicp)
+ 		get_speed_duplex(nicp);
+ 		return;
+ 	}
+-	nicp->speed = edata.speed * 1000000;
++	nicp->speed = (uint64_t)edata.speed * 1000000;
+ 	nicp->duplex = edata.duplex;
+ }
+ #endif /* OS_LINUX */
